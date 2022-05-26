@@ -1,0 +1,136 @@
+@font-face {
+  font-family: spotify;
+  src: url(circular-black.ttf);
+}
+
+/* general */
+
+body {
+  background-color: #191414;
+  overflow-x: hidden;
+  position: relative;
+}
+.App {
+  text-align: center;
+}
+.App-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: 'spotify';
+}
+
+.title {
+  font-size: 5em;
+}
+
+.button{
+  text-decoration: none;
+}
+
+i {
+  position: absolute;
+}
+
+.explicit {
+  background-color: red;
+}
+
+/* playlist containers */
+
+.pl-container {
+  margin: 7px;
+  display: flex; 
+  background-color: #4b917d;
+  padding: 30px;
+  border-radius: 25px;
+}
+
+.pl-container:hover {
+  transform: scale(1.01);
+  transition: all .2s ease-in-out;
+  cursor: pointer;
+}
+
+.pl-container td {
+  flex: 1; /* additionally, equal width */
+  padding: 1em;
+}
+
+.pl-img {
+  width: 30%;
+  float:left;
+}
+
+.pl-content {
+  text-align: center;
+  font-size: 1em;
+}
+
+
+/* song containers */
+
+.song-container {
+  margin: 7px;
+  padding: 30px;
+  border-radius: 25px;
+  width: 80%;
+  font-size: 1em;
+  text-align: left;
+}
+
+.song-content {
+  text-align: left;
+  font-size: 1em;
+  width: 400%;
+  padding-left: 30px;
+
+}
+
+.song-img {
+  width: 500px;
+  float:right;
+}
+
+.song-box, .pl-compare-container {
+  width: 100%;
+  display: flex; flex-direction: row;
+  justify-content: center;
+}
+
+/* buttons */
+button, .button {
+  font-size: 0.8em;
+  color: white;
+  background-color: #1ED760;
+  border:0px;
+  font-family: spotify;
+  border-radius: 500px;
+  transition: all .2s ease-in-out;
+  padding: 15px 30px 15px 30px ;
+  margin: 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+  width: 300px;
+}
+
+button:hover, .button:hover {
+	transform: scale(1.01);
+  cursor: pointer;
+}
+
+.buttons {
+  width: 300px;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+
+/* animation */
+
+@keyframes button{
+	0% {transform:translateX(-100%);}
+	100% {transform:translateX(100%);}
+}
