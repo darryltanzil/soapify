@@ -15,8 +15,6 @@ Need to quickly make a playlist for that middle school dance, but don't want to 
 * Bring the app out of development mode to allow more then 25 users
 
 ## Images
-[Create React App](https://github.com/facebook/create-react-app).
-
 ![image](https://user-images.githubusercontent.com/5387769/170523265-0e4aa3ad-abbe-4029-8c4f-35a687ccbd64.png)
 
 ![image](https://user-images.githubusercontent.com/5387769/170523350-c940f164-4c99-4eba-8149-8eb332f577c0.png)
