@@ -4,7 +4,7 @@ Need to quickly make a playlist for that middle school dance, but don't want to 
 
 ## Technologies Used
 * React (with ES6 Javascript)
-* Axios
+* Axios (promise-based HTTP client)
 * Spotify Web API
 * Node.JS
 
