@@ -10,7 +10,7 @@ Need to quickly make a playlist for that middle school dance, but don't want to 
 
 ## What needs to be done
 * States are unsynced with render function. Need to sync.
-* implement "Add Clean Version" button which auto adds all clean songs to playlist
+* Implement "Add Clean Version" button which auto adds all clean songs to playlist
 * Host using Heroku / Firebase so people can use it
 * Bring the app out of development mode to allow more then 25 users
 * Implement Search Algorithm
