@@ -4,11 +4,11 @@
 }
 
 /* general */
-
 body {
   background-color: #191414;
   overflow-x: hidden;
   position: relative;
+  padding-bottom: 110px;
 }
 .App {
   text-align: center;
@@ -125,6 +125,18 @@ button:hover, .button:hover {
   width: 300px;
   table-layout: fixed;
   border-collapse: collapse;
+}
+
+
+.footer{
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: black;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
 

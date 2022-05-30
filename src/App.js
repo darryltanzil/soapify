@@ -1,11 +1,12 @@
 import { useEffect, useState, useLayoutEffect} from 'react'; // use effect -> after render, do something 
 import './App.css';
 import axios from 'axios';
+import Footer from './footer'
 
 function App() {
 
   // spotify constants
-  const CLIENT_ID = "XXXXXXXXXXX"
+  const CLIENT_ID = "9a8180550734469f9049f7880c2a91a5"
   const REDIRECT_URI = "http://localhost:3000"
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   const RESPONSE_TYPE = "token"
@@ -129,7 +130,7 @@ function App() {
     }
 
     console.log(selectedPlaylistID); 
-    console.log(selectedPlaylist);
+    console.log("The selected playlist is " + selectedPlaylist);
     getSongs();
   }, [selectedPlaylistID, token])
 
@@ -139,11 +140,24 @@ function App() {
     window.localStorage.removeItem("token")
   }
 
+  function uploadClean() {
+    axios.post('/user', {
+      firstName: 'Fred',
+      lastName: 'Flintstone'
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
   const renderPlaylists = () => {
     return playlists.map(playlist => (
-      <div key={playlist.id} className="pl-container" onClick={() => setSelectedPlaylistID(playlist.id)}>
+      <div key={playlist.id} className="pl-container" onClick={() => {setSelectedPlaylistID(playlist.id);setNewCleanPlaylist([])}}>
         <div className="playlist-box">
-          <div className="pl-img">{playlist.images[0].width ? <img width={"100%"} src={playlist.images[0].url} alt="" /> : <div>No Image</div>}</div>
+          <div className="pl-img">{playlist.images[0] ? <img width={"100%"} src={playlist.images[0].url} alt="" /> : <div>No Image</div>}</div>
           <div className="pl-content">
             <h1>{playlist.name}</h1>
             <p>
@@ -199,23 +213,41 @@ function App() {
               <button type="submit" onClick={(e) => searchPlaylists(e)}><span>get playlists</span></button>
               <button onClick={logout} className="button">logout</button>
             </div>
-
             {renderPlaylists()}
+            { selectedPlaylistID !== "" ? 
+            <div>
+              <button onClick={() => {setSelectedPlaylistID("5NVYMkZmmeu7NrW5ZcTGvh"); setNewCleanPlaylist([])}} className="button">find non-explicit</button>
+              { currentSongNameToClean !== "" ?
+              <button onClick={() => {setSelectedPlaylistID("5NVYMkZmmeu7NrW5ZcTGvh"); setNewCleanPlaylist([])}} className="button">add clean claylist to account</button>
+              : null }
+            </div>
+            : null
+            }
             {isMobile ?
               <>
-                <h2>Non-Explicit</h2>{renderCleanSongs()}<br />
-                <br />
-                <h2>Original</h2> <br />  {renderSongs()}
+                
+                <h1>Clean</h1>
+                  {renderCleanSongs()}
+                <h1>Unclean</h1>
+                  {renderSongs()}
               </>
               :
+              <>
               <div class="pl-compare-container">
-                <div style={{ float: 'right' }}><h2>Original</h2> <br /> {renderSongs()}</div>
-                <div style={{ float: 'right' }}><h2>Non-Explicit</h2> <br />{renderCleanSongs()}</div>
+                <div style={{ float: 'right' }}>
+                  <h1>Clean</h1>
+                  {renderCleanSongs()}
+                  <h1>Unclean</h1>
+                  {renderSongs()}
+                </div>
+                
               </div>
+              </>
             }
           </>
         }
       </header>
+      <Footer />
     </div>
   );
 }
