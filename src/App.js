@@ -65,10 +65,9 @@ function App() {
         }
       ).then((res) => {
         var newPlaylistID = res.data.id
-        //alert("res id is " + newPlaylistID)
         var urisClean = []
         newCleanPlaylist?.map(CS => (urisClean.push(CS.uri)))
-        //alert("array of URIS is " + urisClean)
+        alert("The clean playlist has been generated to your account!")
 
         axios.post("https://api.spotify.com/v1/playlists/" + newPlaylistID + "/tracks",
           {
