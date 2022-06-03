@@ -6,7 +6,7 @@ import Footer from './footer'
 function App() {
 
   // spotify constants
-  const CLIENT_ID = "9a8180550734469f9049f7880c2a91a5"
+  const CLIENT_ID = "XXXXXXX"
   const REDIRECT_URI = "http://localhost:3000"
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   const RESPONSE_TYPE = "token"
