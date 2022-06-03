@@ -1,4 +1,4 @@
-import { useEffect, useState, useLayoutEffect} from 'react'; // use effect -> after render, do something 
+import { useEffect, useState, useLayoutEffect } from 'react'; // use effect -> after render, do something 
 import './App.css';
 import axios from 'axios';
 import Footer from './footer'
@@ -6,19 +6,21 @@ import Footer from './footer'
 function App() {
 
   // spotify constants
-  const CLIENT_ID = "XXXXXXX"
+  const CLIENT_ID = "XXXXXXXX"
   const REDIRECT_URI = "http://localhost:3000"
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   const RESPONSE_TYPE = "token"
+  const SCOPE = "playlist-modify-private"
 
-  const [token, setToken] = useState("") // state variable used to hold spotify token
-  const [selectedPlaylistID, setSelectedPlaylistID] = useState("") // state variable used to hold spotify token
-  const [selectedPlaylist, setSelectedPlaylist] = useState([]) // state variable used to hold spotify token
+  const [token, setToken] = useState("")
+  const [selectedPlaylistID, setSelectedPlaylistID] = useState("")
+  const [selectedPlaylist, setSelectedPlaylist] = useState([])
+  const [selectedPlaylistObject, setSelectedPlaylistObject] = useState({})
 
   const [width, setWidth] = useState(window.innerWidth);
   const [currentSongNameToClean, setCurrentSongNameToClean] = useState("");
   const [currentSongItem, setCurrentSongItem] = useState({});
-  const [newCleanPlaylist, setNewCleanPlaylist] = useState([]) // state variable used to hold spotify token
+  const [newCleanPlaylist, setNewCleanPlaylist] = useState([])
   const [currentSongExplicit, setCurrentSongExplicit] = useState(false);
 
   useLayoutEffect(() => {
@@ -26,7 +28,7 @@ function App() {
       setNewCleanPlaylist((newCleanPlaylist) => newCleanPlaylist.concat({}).filter(value => Object.keys(value).length !== 0))
       console.log('this is the newCleanPlaylist' + JSON.stringify(newCleanPlaylist))
     }, 2000);
-  
+
     return () => clearInterval(interval);
   }, []);
 
@@ -34,6 +36,43 @@ function App() {
   function handleWindowSizeChange() {
     setWidth(window.innerWidth);
   }
+
+  const generateCleanPlaylist = () => {
+    var user_id = ''
+    axios.get('https://api.spotify.com/v1/me', {
+
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+
+    }).then((response) => {
+      user_id = response.data.id
+      alert("THE JSON OBJECT IS " + JSON.stringify(selectedPlaylistObject))
+      alert(selectedPlaylistObject.name)
+      alert(selectedPlaylistObject.description)
+      alert(selectedPlaylistObject.public)
+
+      axios.post("https://api.spotify.com/v1/users/" + user_id + "/playlists",
+        {
+          name: selectedPlaylistObject.name + " Clean",
+          description: selectedPlaylistObject.description,
+          public: selectedPlaylistObject.public
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      ).then((res) => {
+        console.log(res)
+        alert(res)
+        alert("successfully added playlist!")
+      })
+
+    })
+  }
+
+
   useEffect(() => {
     window.addEventListener('resize', handleWindowSizeChange);
     return () => {
@@ -92,9 +131,13 @@ function App() {
 
         }
       })
-
+      if (data.name !== "soapify empty") {
+        setSelectedPlaylistObject(data)
+      }
+      alert("selected playlist")
+      console.log("the selected playlist object is" + JSON.stringify(data));
       setSelectedPlaylist(data.tracks.items) // gets all songs from the playlist, and puts them into it      
-      
+
       function addCleanSongs(trackName, track, explicit) {
         setCurrentSongNameToClean(trackName)
         setCurrentSongItem(track)
@@ -129,7 +172,7 @@ function App() {
       explicit ? searchForClean() : setNewCleanPlaylist((newCleanPlaylist) => newCleanPlaylist.concat(track).filter(value => Object.keys(value).length !== 0))
     }
 
-    console.log(selectedPlaylistID); 
+    console.log(selectedPlaylistID);
     console.log("The selected playlist is " + selectedPlaylist);
     getSongs();
   }, [selectedPlaylistID, token])
@@ -145,17 +188,17 @@ function App() {
       firstName: 'Fred',
       lastName: 'Flintstone'
     })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   const renderPlaylists = () => {
     return playlists.map(playlist => (
-      <div key={playlist.id} className="pl-container" onClick={() => {setSelectedPlaylistID(playlist.id);setNewCleanPlaylist([])}}>
+      <div key={playlist.id} className="pl-container" onClick={() => { setSelectedPlaylistID(playlist.id); setNewCleanPlaylist([]) }}>
         <div className="playlist-box">
           <div className="pl-img">{playlist.images[0] ? <img width={"100%"} src={playlist.images[0].url} alt="" /> : <div>No Image</div>}</div>
           <div className="pl-content">
@@ -206,7 +249,7 @@ function App() {
 
 
         {!token ?
-          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`} className="button">login to spotify</a>
+          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`} className="button">login to spotify</a>
           :
           <>
             <div>
@@ -214,34 +257,34 @@ function App() {
               <button onClick={logout} className="button">logout</button>
             </div>
             {renderPlaylists()}
-            { selectedPlaylistID !== "" ? 
-            <div>
-              <button onClick={() => {setSelectedPlaylistID("5NVYMkZmmeu7NrW5ZcTGvh"); setNewCleanPlaylist([])}} className="button">find non-explicit</button>
-              { currentSongNameToClean !== "" ?
-              <button onClick={() => {setSelectedPlaylistID("5NVYMkZmmeu7NrW5ZcTGvh"); setNewCleanPlaylist([])}} className="button">add clean claylist to account</button>
-              : null }
-            </div>
-            : null
+            {selectedPlaylistID !== "" ?
+              <div>
+                <button onClick={() => { setSelectedPlaylistID("5NVYMkZmmeu7NrW5ZcTGvh"); setNewCleanPlaylist([]) }} className="button">find non-explicit</button>
+                {currentSongNameToClean !== "" ?
+                  <button onClick={() => { setSelectedPlaylistID("5NVYMkZmmeu7NrW5ZcTGvh"); generateCleanPlaylist() }} className="button">add clean claylist to account</button>
+                  : null}
+              </div>
+              : null
             }
             {isMobile ?
               <>
-                
+
                 <h1>Clean</h1>
-                  {renderCleanSongs()}
+                {renderCleanSongs()}
                 <h1>Unclean</h1>
-                  {renderSongs()}
+                {renderSongs()}
               </>
               :
               <>
-              <div class="pl-compare-container">
-                <div style={{ float: 'right' }}>
-                  <h1>Clean</h1>
-                  {renderCleanSongs()}
-                  <h1>Unclean</h1>
-                  {renderSongs()}
+                <div class="pl-compare-container">
+                  <div style={{ float: 'right' }}>
+                    <h1>Clean</h1>
+                    {renderCleanSongs()}
+                    <h1>Unclean</h1>
+                    {renderSongs()}
+                  </div>
+
                 </div>
-                
-              </div>
               </>
             }
           </>
