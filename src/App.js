@@ -6,7 +6,7 @@ import Footer from './footer'
 function App() {
 
   // spotify constants
-  const CLIENT_ID = "XXXXXXXX"
+  const CLIENT_ID = "XXXXX"
   const REDIRECT_URI = "http://localhost:3000"
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   const RESPONSE_TYPE = "token"
@@ -47,10 +47,10 @@ function App() {
 
     }).then((response) => {
       user_id = response.data.id
-      alert("THE JSON OBJECT IS " + JSON.stringify(selectedPlaylistObject))
-      alert(selectedPlaylistObject.name)
-      alert(selectedPlaylistObject.description)
-      alert(selectedPlaylistObject.public)
+     // alert("THE JSON OBJECT IS " + JSON.stringify(selectedPlaylistObject))
+      //alert(selectedPlaylistObject.name)
+      //alert(selectedPlaylistObject.description)
+      //alert(selectedPlaylistObject.public)
 
       axios.post("https://api.spotify.com/v1/users/" + user_id + "/playlists",
         {
@@ -64,9 +64,22 @@ function App() {
           },
         }
       ).then((res) => {
-        console.log(res)
-        alert(res)
-        alert("successfully added playlist!")
+        var newPlaylistID = res.data.id
+        //alert("res id is " + newPlaylistID)
+        var urisClean = []
+        newCleanPlaylist?.map(CS => (urisClean.push(CS.uri)))
+        //alert("array of URIS is " + urisClean)
+
+        axios.post("https://api.spotify.com/v1/playlists/" + newPlaylistID + "/tracks",
+          {
+            "uris": urisClean
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
       })
 
     })
@@ -134,7 +147,6 @@ function App() {
       if (data.name !== "soapify empty") {
         setSelectedPlaylistObject(data)
       }
-      alert("selected playlist")
       console.log("the selected playlist object is" + JSON.stringify(data));
       setSelectedPlaylist(data.tracks.items) // gets all songs from the playlist, and puts them into it      
 
