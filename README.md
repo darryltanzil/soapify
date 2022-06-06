@@ -13,11 +13,12 @@ Soapify allows you to grab your playlists from your account, and then generates 
 * Node.JS
 
 ## What needs to be done
-* States are unsynced with render function. Need to sync.
-* Implement "Add Clean Version" button which auto adds all clean songs to playlist
-* Host using Heroku / Firebase so people can use it
+* Current algorithm is too picky, and doesn't pick up on some clean songs- refine by changing tempo variance, or looking at time signature?
+* Create buttons and fields which let the user refine how precise they want the algorithm to be
+* 429 too many requests error when dealing with excessively large playlists- perhaps use setInterval) in between?
+* Host using Heroku / Firebase so people don't have to host locally
 * Bring the app out of development mode to allow more then 25 users
-* Implement Search Algorithm
+* Get actually good UI design
 
 ## Images
 <img width="321" alt="image" src="https://user-images.githubusercontent.com/5387769/172107335-9d757375-a17b-4600-b196-6be809f78b06.png" style="float: left;">
