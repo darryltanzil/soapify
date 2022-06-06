@@ -6,7 +6,7 @@ import Footer from './footer'
 function App() {
 
   // spotify constants
-  const CLIENT_ID = "XXXXXX"
+  const CLIENT_ID = "XXXXX"
   const REDIRECT_URI = "http://localhost:3000"
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   const RESPONSE_TYPE = "token"
@@ -164,7 +164,6 @@ function App() {
     function addNewClean(trackName, track, explicit) {
       var cleanHasbeenFound = false
       async function searchForClean() {
-        var correctCleanSong = {}
         
         const { data } = await axios.get("https://api.spotify.com/v1/search", {
           headers: {
@@ -198,10 +197,11 @@ function App() {
               var isOnTempo = iteratedSong.data.track.tempo - 0.1 <= currentSongItemAudioData.data.track.tempo && currentSongItemAudioData.data.track.tempo <= iteratedSong.data.track.tempo + 0.1 ? true : false
               var isSameDuration = iteratedSong.data.track.duration === currentSongItemAudioData.data.track.duration?  true : false
               var isExplicit = CS.explicit ? true : false
-              if (isOnTempo && isSameDuration && !cleanHasbeenFound && !isExplicit) {
-                correctCleanSong = CS
-                console.log("setting the new clean Playlist to " + JSON.stringify(correctCleanSong))
-                setNewCleanPlaylist((newCleanPlaylist) => newCleanPlaylist.concat(correctCleanSong).filter(value => Object.keys(value).length !== 0))
+              var sameTrackName = CS.name === track.name ? true : false
+
+              if (sameTrackName && isSameDuration && !cleanHasbeenFound && !isExplicit) {
+                console.log("setting the new clean Playlist to " + JSON.stringify(CS))
+                setNewCleanPlaylist((newCleanPlaylist) => newCleanPlaylist.concat(CS).filter(value => Object.keys(value).length !== 0))
                 cleanHasbeenFound = true
               }
               else {
@@ -209,8 +209,7 @@ function App() {
               }
             })
           ))
-        })
-        
+        })        
       }
 
       console.log(newCleanPlaylist);
