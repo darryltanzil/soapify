@@ -4,6 +4,9 @@ Need to quickly make a playlist for that middle school dance, but don't want to 
 
 Soapify allows you to grab your playlists from your account, and then generates a clean playlist using the following algorithm:
 
+[localhost-1654486007053.log](https://github.com/darryltanzil/soapify/files/8842303/localhost-1654486007053.log)
+
+
 ## Technologies Used
 * React (with ES6 Javascript)
 * Axios (promise-based HTTP client)
