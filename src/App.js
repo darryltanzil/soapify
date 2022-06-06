@@ -6,7 +6,7 @@ import Footer from './footer'
 function App() {
 
   // spotify constants
-  const CLIENT_ID = "XXXXX"
+  const CLIENT_ID = "XXXXXX"
   const REDIRECT_URI = "http://localhost:3000"
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   const RESPONSE_TYPE = "token"
@@ -47,7 +47,7 @@ function App() {
 
     }).then((response) => {
       user_id = response.data.id
-     // alert("THE JSON OBJECT IS " + JSON.stringify(selectedPlaylistObject))
+      // alert("THE JSON OBJECT IS " + JSON.stringify(selectedPlaylistObject))
       //alert(selectedPlaylistObject.name)
       //alert(selectedPlaylistObject.description)
       //alert(selectedPlaylistObject.public)
@@ -160,27 +160,61 @@ function App() {
       selectedPlaylist.map(SP => (addCleanSongs(SP.track.name, SP.track, SP.track.explicit)))
       setNewCleanPlaylist([])
     }
-
+    
     function addNewClean(trackName, track, explicit) {
+      var cleanHasbeenFound = false
       async function searchForClean() {
+        var correctCleanSong = {}
+        
         const { data } = await axios.get("https://api.spotify.com/v1/search", {
           headers: {
             Authorization: `Bearer ${token}`
           },
           params: {
-            q: trackName + " clean",
+            q: trackName,
             type: 'track',
-            limit: 1
+            limit: 5,
+            offset: 0
           }
         })
+        axios.get('https://api.spotify.com/v1/audio-analysis/' + track.id, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
 
-        setNewCleanPlaylist((newCleanPlaylist) => newCleanPlaylist.concat(data.tracks.items[0]).filter(value => Object.keys(value).length !== 0))
+        }).then((currentSongItemAudioData) => {
+          console.log("the search result is " + JSON.stringify(data.tracks.items))
+          console.log("data track items are " + data.tracks.items[0].id)
 
-        console.log("data items:" + data.tracks.items[0])
+          data.tracks.items.map(CS => (
+            axios.get('https://api.spotify.com/v1/audio-analysis/' + CS.id, {
+  
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            }).then((iteratedSong) => {
+              console.log("why is this not iterating")
+              console.log(JSON.stringify(iteratedSong) + "=" + JSON.stringify(currentSongItemAudioData))
+              var isOnTempo = iteratedSong.data.track.tempo - 0.1 <= currentSongItemAudioData.data.track.tempo && currentSongItemAudioData.data.track.tempo <= iteratedSong.data.track.tempo + 0.1 ? true : false
+              var isSameDuration = iteratedSong.data.track.duration === currentSongItemAudioData.data.track.duration?  true : false
+              var isExplicit = CS.explicit ? true : false
+              if (isOnTempo && isSameDuration && !cleanHasbeenFound && !isExplicit) {
+                correctCleanSong = CS
+                console.log("setting the new clean Playlist to " + JSON.stringify(correctCleanSong))
+                setNewCleanPlaylist((newCleanPlaylist) => newCleanPlaylist.concat(correctCleanSong).filter(value => Object.keys(value).length !== 0))
+                cleanHasbeenFound = true
+              }
+              else {
+                console.log("not the correct song")
+              }
+            })
+          ))
+        })
+        
       }
 
       console.log(newCleanPlaylist);
-      explicit ? searchForClean() : setNewCleanPlaylist((newCleanPlaylist) => newCleanPlaylist.concat(track).filter(value => Object.keys(value).length !== 0))
+      searchForClean()
     }
 
     console.log(selectedPlaylistID);
@@ -192,19 +226,6 @@ function App() {
   const logout = () => {
     setToken("")
     window.localStorage.removeItem("token")
-  }
-
-  function uploadClean() {
-    axios.post('/user', {
-      firstName: 'Fred',
-      lastName: 'Flintstone'
-    })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
   }
 
   const renderPlaylists = () => {
