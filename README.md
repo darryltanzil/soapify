@@ -13,6 +13,23 @@ Soapify allows you to grab your playlists from your account, and then generates 
 * Node.JS
 * dotenv@16.0.1 (environment variable library so people can't see the API key)
 
+## Installation
+Since this is still in active development, I am not hosting it online- however, you can run it locally by setting up your own Spotify developer app, giving yourself the correct permissions, and then running your own instance.
+
+1. Register your app instance at https://developer.spotify.com
+2. Clone the repo
+```
+git clone https://github.com/darryltanzil/soapify.git
+```
+3. Install NPM packages
+```
+npm install
+```
+4. Enter your CLIENT_ID in App.js
+```javascript
+const CLIENT_ID = 'XXXXXX';
+```
+
 ## What needs to be done
 * Current algorithm is too picky, and doesn't pick up on some clean songs- refine by changing tempo variance, or looking at time signature?
 * Create buttons and fields which let the user refine how precise they want the algorithm to be
