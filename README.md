@@ -11,6 +11,7 @@ Soapify allows you to grab your playlists from your account, and then generates 
 * Axios (promise-based HTTP client)
 * Spotify Web API
 * Node.JS
+* dotenv@16.0.1 (environment variable library so people can't see the API key)
 
 ## What needs to be done
 * Current algorithm is too picky, and doesn't pick up on some clean songs- refine by changing tempo variance, or looking at time signature?
