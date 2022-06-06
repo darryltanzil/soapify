@@ -25,7 +25,7 @@ git clone https://github.com/darryltanzil/soapify.git
 ```
 npm install
 ```
-4. Enter your CLIENT_ID in App.js
+4. Enter your CLIENT_ID in src/App.js
 ```javascript
 const CLIENT_ID = 'XXXXXX';
 ```
