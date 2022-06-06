@@ -19,15 +19,6 @@ Soapify allows you to grab your playlists from your account, and then generates 
 * Bring the app out of development mode to allow more then 25 users
 * Implement Search Algorithm
 
-## Potential Search Algorithm
-Currently, the app works by appending "clean version" to a spotify search of the song name it is looking for a clean version of. A potential, more accure accurate result would do the following:
-
-1. Get the Audio Analysis Data using the track's ID, for the top 5 most clean versions of the song.
-2. Using this, compare the tempo, pitch, audio duration, mood, etc, and assign a variance number in comparison to the original song.
-3. Given this various number, compare against all 5 versions, and with the most accurate, assign to the playlist.
-
-This would utilise the AI within Spotify to create a flawless way to find the clean version- will need to implement in the future.
-
 ## Images
 <img width="321" alt="image" src="https://user-images.githubusercontent.com/5387769/172107335-9d757375-a17b-4600-b196-6be809f78b06.png" style="float: left;">
 <img width="324" alt="image" src="https://user-images.githubusercontent.com/5387769/172107387-223026c2-1c50-4554-8fc2-04729f6d04d6.png" style="float: left;">
