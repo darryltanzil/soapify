@@ -6,7 +6,7 @@ import Footer from './footer'
 function App() {
 
   // spotify constants
-  const CLIENT_ID = "XXXXX"
+  const CLIENT_ID = "9a8180550734469f9049f7880c2a91a5"
   const REDIRECT_URI = "http://localhost:3000"
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   const RESPONSE_TYPE = "token"
@@ -250,7 +250,7 @@ function App() {
         <div className="song-content">
           <p>
             {SP.track.name} &nbsp;
-            {SP.track.explicit ? <i className="material-icons" style={{ fontSize: '20px' }}>explicit</i> : null} &nbsp;
+            {SP.track.explicit && <i className="material-icons" style={{ fontSize: '20px' }}>explicit</i>} &nbsp;
           </p>
         </div>
         <br />
@@ -267,7 +267,7 @@ function App() {
         <div className="song-img">{CS.album.images[0].width ? <img width={"100%"} src={CS.album.images[0].url} alt="" /> : <div>No Image</div>}</div>
         <div className="song-content">
           <p>{CS.name}</p>
-          {CS.explicit ? <i className="material-icons" style={{ fontSize: '20px' }}>explicit</i> : null} &nbsp;
+          {CS.explicit && <i className="material-icons" style={{ fontSize: '20px' }}>explicit</i>} &nbsp;
         </div>
       </div>
     ))
@@ -288,14 +288,13 @@ function App() {
               <button onClick={logout} className="button">logout</button>
             </div>
             {renderPlaylists()}
-            {selectedPlaylistID !== "" ?
+            {selectedPlaylistID !== "" &&
               <div>
                 <button onClick={() => { setSelectedPlaylistID("5NVYMkZmmeu7NrW5ZcTGvh"); setNewCleanPlaylist([]) }} className="button">find non-explicit</button>
-                {currentSongNameToClean !== "" ?
+                {currentSongNameToClean !== "" &&
                   <button onClick={() => { setSelectedPlaylistID("5NVYMkZmmeu7NrW5ZcTGvh"); generateCleanPlaylist() }} className="button">add clean claylist to account</button>
-                  : null}
+                  }
               </div>
-              : null
             }
             {isMobile ?
               <>
