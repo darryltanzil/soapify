@@ -6,7 +6,7 @@ import Footer from './footer'
 function App() {
 
   // spotify constants
-  const CLIENT_ID = "XXXXXXXXXXX"
+  const CLIENT_ID = "9a8180550734469f9049f7880c2a91a5"
   const REDIRECT_URI = "http://localhost:3000"
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   const RESPONSE_TYPE = "token"
@@ -111,7 +111,7 @@ function App() {
     setPlaylists(data.items) // gets all plalists, and puts them in the constant "playlists"
   }
 
-  // occurs every time a state variable changes
+  // occurs every time token state variable changes
   useEffect(() => {
     const hash = window.location.hash
     let token = window.localStorage.getItem("token")
